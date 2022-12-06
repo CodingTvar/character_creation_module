@@ -1,4 +1,5 @@
 from random import randint
+from graphic_arts.start_game_banner import run_screensaver
 
 # Глобальная константа стандартной атаки.
 DEFAULT_ATTACK = 5
@@ -70,7 +71,7 @@ def choice_char_class(char_name: str) -> Character:
                     'mage': Mage,
                     'healer': Healer}
     
-    approve_choice: str = None
+    approve_choice: str = ''
     
     while approve_choice != 'y':
         selected_class = input('Введи название персонажа, '
@@ -85,16 +86,16 @@ def choice_char_class(char_name: str) -> Character:
     return char_class
 
 
-def start_training(character):
+def start_training(character: Character) -> str:
     """
     Принимает на вход имя и класс персонажа.
     Возвращает сообщения о результатах цикла тренировки персонажа.
     """
     # Замените конструкцию условных операторов на словарь.
     commands = {
-        'attack': character.attack,
-        'defence': character.defence,
-        'special': character.special
+        'attack': character.attack(),
+        'defence': character.defence(),
+        'special': character.special()
     }
     cmd = None
     while cmd != 'skip':
@@ -106,3 +107,16 @@ def start_training(character):
         if cmd in commands:
             print(commands[cmd])
     return 'Тренировка окончена.'
+
+
+if __name__ == '__main__':
+    run_screensaver()
+    print('Приветствую тебя, искатель приключений!')
+    print('Прежде чем начать игру...')
+    char_name: str = input('...назови себя: ')
+    print(f'Здравствуй, {char_name}! '
+        'Сейчас твоя выносливость — 80, атака — 5 и защита — 10.')
+    print('Ты можешь выбрать один из трёх путей силы:')
+    print('Воитель, Маг, Лекарь')
+    char_class: Character = choice_char_class(char_name)
+    print(start_training(char_class))
